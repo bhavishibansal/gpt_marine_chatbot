@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML5 Video in Leftside Triangle</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styleroute.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+    <script src="https://mediafiles.botpress.cloud/5fa73c6c-2825-474c-89f9-a3b72e2aa57c/webchat/config.js" defer></script>
+    <script src="scriptone.js" defer></script>
+    <!-- <script src="scriptroute.js" defer></script> -->
+  </head>
+
+  <body>
+    <div class="container">
+      <nav>
+        <div class="logos"><img src="logo.jpg" alt="" srcset="" width="80px" style="margin-top: 50px; border-radius: 50%;"><a href="#" class="logo">GPT Marine</a></div>
+
+        <ul>
+            <li><a href="route.html">Route</a></li>
+            <li><a href="shipcompany.html">Ship Company Details</a></li>
+            <li><a href="#services">Route Fright</a></li>
+            <li><a href="#contact">Design & Info</a></li>
+            <li><a href="#contact">Map</a></li>
+        </ul>
+        <a href="#" class="login" onclick="openPopup()">Login</a>
+
+    </nav>
+
+      <div class="popup" id="login-popup">
+        <span class="popup-close" onclick="closePopup()">&times;</span>
+        <div class="card">
+          <form id="login-form">
+            <h1>Login</h1>
+            <input type="text" placeholder="Email" required />
+            <input type="password" placeholder="Password" required />
+            <button class="button" type="submit">Login</button>
+            <p id="register-btn" onclick="switchToRegister()">Don't have an account ? Register Now.</p>
+          </form>
+
+          <form id="register-form" style="display: none;">
+            <h1>Register</h1>
+            <input type="text" placeholder="First Name" required />
+            <input type="text" placeholder="Last Name" required />
+            <input type="text" placeholder="Email" required />
+            <input type="password" placeholder="Password" required />
+            <button class="button" type="submit">Register</button>
+            <p id="sign-in-btn" onclick="switchToLogin()">Already have an account? Sign in</p>
+          </form>
+
+          <h3>OR</h3>
+
+          <div class="social-login">
+            <div class="google-btn">
+              <div class="google-icon-wrapper">
+                <img class="google-icon" src="download.png " />
+              </div>
+              <p class="btn-text">
+                <b>Sign in with google</b>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="daabe">
+        <div class="map-section" id="map">
+          <img src="brazil to china.png" alt="" />
+        </div>
+        <div class="details-section">
+          <h2>Company Details</h2>
+          <div class="company-info">
+            <p>
+              <strong>Company Name:</strong> <span id="companyName"></span>
+            </p>
+            <p>
+              <strong>Ship Type:</strong> <span id="shipType"></span>
+            </p>
+            <p>
+              <strong>Source:</strong> <span id="source"></span>
+            </p>
+            <p>
+              <strong>Destination:</strong> <span id="destination"></span>
+            </p>
+          </div>
+          <h2>Halt Ports Information</h2>
+          <table id="haltPortsTable">
+            <thead>
+              <tr>
+                <th>Halt Port</th>
+                <th>Weather</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Table rows will be populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const companyData = {
+            companyName: "Oceanic Transport Co.",
+            shipType: "Bulk carriers",
+            source: "Brazil",
+            destination: "China",
+            haltPorts: [{
+                    port: "Durban",
+                    weather: "Sunny"
+                }, {
+                    port: "Shanghai",
+                    weather: "Cloudy"
+                }
+                // Add more halt ports as needed
+            ]
+        };
+    
+      // Populate company details
+      document.getElementById('companyName').innerText = companyData.companyName
+      document.getElementById('shipType').innerText = companyData.shipType
+      document.getElementById('source').innerText = companyData.source
+      document.getElementById('destination').innerText = companyData.destination
+    
+      // Populate halt ports table
+      const haltPortsTable = document.getElementById('haltPortsTable').getElementsByTagName('tbody')[0]
+      companyData.haltPorts.forEach((port) => {
+        const row = haltPortsTable.insertRow()
+        const portCell = row.insertCell(0)
+        const weatherCell = row.insertCell(1)
+        portCell.textContent = port.port
+        weatherCell.textContent = port.weather
+      })
+    
+    })
+  </script>
+</html>

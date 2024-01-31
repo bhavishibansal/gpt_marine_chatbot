@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Video in Leftside Triangle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> {% endcomment %} -->
+    <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+    <script src="https://mediafiles.botpress.cloud/5fa73c6c-2825-474c-89f9-a3b72e2aa57c/webchat/config.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="logos"><img src="logo.jpg" alt="" srcset="" width="80px" style="margin-top: 50px; border-radius: 50%;"><a href="#" class="logo">GPT Marine</a></div>
+
+            <ul>
+                <li><a href="route.html">Route</a></li>
+                <li><a href="shipcompany.html">Ship Company Details</a></li>
+                <li><a href="#services">Tracking(Ship and Cargo)</a></li>
+                <li><a href="#contact">Design & Info</a></li>
+                <li><a href="#contact">Map</a></li>
+            </ul>
+            <a href="#" class="login" onclick="openPopup()">Login</a>
+
+        </nav>
+        <div class="popup" id="login-popup">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div class="card">
+
+                <form id="login-form">
+                    <h1>Login</h1>
+                    <input type="text" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button class="button" type="submit">Login</button>
+                    <p id="register-btn" onclick="switchToRegister()">Don't have an account ? Register Now.
+                    </p>
+                </form>
+
+                <form id="register-form" style="display: none;">
+                    <h1>Register</h1>
+                    <input type="text" placeholder="First Name" required>
+                    <input type="text" placeholder="Last Name" required>
+                    <input type="text" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button class="button" type="submit">Register</button>
+                    <p id="sign-in-btn" onclick="switchToLogin()">Already have an account? Sign in
+                    </p>
+                </form>
+
+                <h3>OR</h3>
+
+                <div class=" social-login ">
+                    <div class="google-btn ">
+                        <div class="google-icon-wrapper ">
+                            <img class="google-icon " src="download.png " />
+                        </div>
+                        <p class="btn-text "><b>Sign in with google</b></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- <button class="chatbot-toggler">
+                <span class="close-btn material-symbols-outlined">mode_comment</span>
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+        <div class="chatbot">
+            <header>
+                <h2>Chatbot</h2>
+            </header>
+
+            <ul class="chatbox">
+                <li class="chat incoming">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                    <p>
+                        Hi there 👋 <br /> How can I help you today?
+                    </p>
+                </li>
+            </ul>
+
+            <div class="chat-input">
+                <textarea placeholder="Enter a message... " required></textarea>
+                <span id="send-btn" class="material-symbols-outlined">send</span>
+            </div>
+        </div> -->
+
+
+        <div class="boxs">
+            <h1 class="heading">Ship Company Details</h1>
+            <div id="companyDetails" class="company-details"></div>
+        </div>
+
+
+    </div>
+</body>
+<script>
+    function openPopup() {
+        document.getElementById('login-popup').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('login-popup').style.display = 'none';
+    }
+
+    document.getElementById('register-btn').addEventListener('click', function() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+    });
+    document.getElementById('sign-in-btn').addEventListener('click', function() {
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('register-form').style.display = 'none';
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('Data.json') // Fetch the JSON file
+            .then(response => response.json())
+            .then(data => {
+                const groupedCompanies = {};
+
+                // Group companies by name
+                data.forEach(company => {
+                    const companyName = company['Company Name'];
+
+                    if (!groupedCompanies[companyName]) {
+                        groupedCompanies[companyName] = [];
+                    }
+
+                    groupedCompanies[companyName].push(company);
+                });
+
+                const companyDetails = document.getElementById('companyDetails');
+
+                // Render grouped companies
+                for (const companyName in groupedCompanies) {
+                    const companies = groupedCompanies[companyName];
+
+                    const infoDiv = document.createElement('div');
+                    infoDiv.classList.add('company-info');
+
+                    const companyNameHeader = document.createElement('h2');
+                    companyNameHeader.innerText = companyName;
+                    infoDiv.appendChild(companyNameHeader);
+
+                    const uniqueDetails = {};
+
+                    companies.forEach(company => {
+                        const shipType = company['Ship Type'];
+                        const loadCapacity = company['Load Capacity'];
+                        const source = company['source'];
+                        const destination = company['destination'];
+
+                        // Check if details are unique, if not, skip adding duplicate details
+                        const key = `${shipType}_${loadCapacity}_${source}_${destination}`;
+                        if (!uniqueDetails[key]) {
+                            const shipDetails = document.createElement('div');
+                            shipDetails.innerHTML = `<strong>Ship Type:</strong> ${shipType} - <strong>Load Capacity:</strong> ${loadCapacity} - <strong>Source:</strong> ${source} - <strong>Destination:</strong> ${destination}`;
+                            infoDiv.appendChild(shipDetails);
+
+                            uniqueDetails[key] = true;
+                        }
+                    });
+
+                    companyDetails.appendChild(infoDiv);
+                }
+            })
+            .catch(error => {
+                console.log('Error fetching data:', error);
+            });
+    });
+</script>
+
+</html>
